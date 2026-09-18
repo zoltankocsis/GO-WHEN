@@ -1,0 +1,5 @@
+node_modules/
+mobile/android/
+mobile/ios/
+*.apk
+.DS_Store

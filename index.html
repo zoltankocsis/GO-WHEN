@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Busz Most — élő budapesti buszinformáció</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <h1>Busz Most</h1>
+  <p>Élő budapesti buszérkezések — egy koppintással</p>
+</header>
+
+<main>
+
+  <div class="setup-note">
+    Ehhez a demóhoz saját API-kulcsok kellenek. Lásd a <code>js/config.js</code> fájlt.
+  </div>
+
+  <section>
+    <h2>Térképes demó</h2>
+    <div class="card">
+      <div id="map"></div>
+      <p class="hint">Kattints a térképen egy pontra — megkeresem a hozzá legközelebbi megállót, és megmutatom, mikor jön a következő busz.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Otthon és munkahely</h2>
+    <div class="card">
+      <div class="settings-row">
+        <label for="home-input">Otthon</label>
+        <input id="home-input" type="text" placeholder="Megálló neve vagy keresés a térképen">
+        <span class="stop-name" id="home-stop-name">nincs beállítva</span>
+      </div>
+      <div class="settings-row">
+        <label for="work-input">Munkahely</label>
+        <input id="work-input" type="text" placeholder="Megálló neve vagy keresés a térképen">
+        <span class="stop-name" id="work-stop-name">nincs beállítva</span>
+      </div>
+      <button id="save-settings">Mentés</button>
+      <button class="secondary" id="show-active">Aktív megálló mutatása most</button>
+      <p class="hint">A widget napszak szerint automatikusan az otthoni vagy munkahelyi megállót mutatja majd (pl. reggel a munkahelyi, este az otthoni).</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>Nem hivatalos, független projekt — nem a BKK terméke.</footer>
+
+<div class="popup" id="popup">
+  <button class="close" id="popup-close">✕</button>
+  <p class="stop-title" id="popup-title">Megálló</p>
+  <p class="stop-sub" id="popup-sub"></p>
+  <div id="popup-body"></div>
+</div>
+
+<script type="module" src="js/map.js"></script>
+
+</body>
+</html>

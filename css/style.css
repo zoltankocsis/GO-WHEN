@@ -1,0 +1,209 @@
+:root {
+  --ink: #0e2233;
+  --paper: #f3efe6;
+  --line-blue: #1c4b82;
+  --line-blue-dark: #0f3a5c;
+  --stop-yellow: #f2b705;
+  --muted: #5c6b78;
+  --card: #ffffff;
+  --radius: 14px;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, -apple-system, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+header {
+  background: var(--line-blue);
+  color: #fff;
+  padding: 22px 20px 26px;
+  position: relative;
+  overflow: hidden;
+}
+header::after {
+  content: "";
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 160px;
+  height: 160px;
+  background: var(--stop-yellow);
+  border-radius: 50%;
+  opacity: 0.15;
+}
+header h1 {
+  margin: 0 0 4px;
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+}
+header p {
+  margin: 0;
+  color: #cfe0f2;
+  font-size: 0.95rem;
+}
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 18px 16px 60px;
+}
+section {
+  margin-top: 22px;
+}
+h2 {
+  font-size: 1.05rem;
+  margin: 0 0 10px;
+  color: var(--line-blue);
+}
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(14, 34, 51, 0.08);
+}
+#map {
+  width: 100%;
+  height: 340px;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.hint {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 8px;
+}
+.settings-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.settings-row label {
+  width: 92px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+.settings-row input {
+  flex: 1;
+  padding: 9px 11px;
+  border-radius: 8px;
+  border: 1px solid #d7dde2;
+  font-size: 0.95rem;
+}
+.settings-row .stop-name {
+  font-size: 0.85rem;
+  color: var(--muted);
+  min-width: 130px;
+}
+button {
+  background: var(--stop-yellow);
+  color: var(--ink);
+  border: none;
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+button:hover {
+  filter: brightness(0.96);
+}
+button.secondary {
+  background: transparent;
+  border: 1.5px solid var(--line-blue);
+  color: var(--line-blue);
+}
+
+/* Felugró kártya — a jövőbeli widget stílusát előlegezi meg */
+.popup {
+  position: fixed;
+  left: 50%;
+  bottom: -320px;
+  transform: translateX(-50%);
+  width: min(92vw, 380px);
+  background: var(--ink);
+  color: #fff;
+  border-radius: 16px 16px 0 0;
+  padding: 18px 18px 22px;
+  transition: bottom 0.28s ease;
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.25);
+  z-index: 20;
+}
+.popup.open {
+  bottom: 0;
+}
+.popup .stop-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 2px;
+}
+.popup .stop-sub {
+  font-size: 0.8rem;
+  color: #a9bccd;
+  margin: 0 0 14px;
+}
+.arrival-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.arrival-row .line-badge {
+  background: var(--stop-yellow);
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 0.82rem;
+  padding: 3px 9px;
+  border-radius: 6px;
+  min-width: 34px;
+  text-align: center;
+}
+.arrival-row .dest {
+  flex: 1;
+  margin: 0 10px;
+  font-size: 0.88rem;
+  color: #e3ecf3;
+}
+.arrival-row .eta {
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+.popup .close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  color: #9fb3c4;
+  font-size: 1.1rem;
+  padding: 2px 6px;
+}
+.empty-note {
+  color: #a9bccd;
+  font-size: 0.85rem;
+  padding: 14px 0 2px;
+}
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.78rem;
+  padding: 20px 16px 40px;
+}
+.setup-note {
+  background: #fff7e0;
+  border: 1px solid #f0d98a;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.85rem;
+  color: #6b5615;
+  margin-bottom: 16px;
+}
+code {
+  background: #eee;
+  padding: 1px 5px;
+  border-radius: 4px;
+}

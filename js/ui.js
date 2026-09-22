@@ -17,6 +17,9 @@ export function openPopup() {
 
 export function closePopup() {
   popup.classList.remove("open");
+  popupTitle.textContent = "Megálló";
+  popupSub.textContent = "";
+  popupBody.innerHTML = '<p class="empty-note">Kattints a térképen egy pontra a buszinformációkért.</p>';
 }
 
 export function showLoading() {
@@ -46,12 +49,12 @@ export function showActiveStopHeader(stop, label) {
   popupSub.textContent = stop ? `Aktív: ${label}` : "";
 }
 
-export function renderArrivals(rawList) {
+export function renderArrivals(rawList, references = {}) {
   if (!rawList.length) {
     popupBody.innerHTML = '<p class="empty-note">A következő órában nincs érkező járat.</p>';
     return;
   }
-  const items = rawList.slice(0, MAX_ARRIVALS_SHOWN).map(formatArrival);
+  const items = rawList.slice(0, MAX_ARRIVALS_SHOWN).map((item) => formatArrival(item, references));
   popupBody.innerHTML = items
     .map(
       (a) => `

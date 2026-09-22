@@ -46,12 +46,28 @@ header p {
   font-size: 0.95rem;
 }
 main {
-  max-width: 720px;
+  max-width: 1240px;
   margin: 0 auto;
   padding: 18px 16px 60px;
 }
-section {
-  margin-top: 22px;
+.layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+.panel {
+  min-width: 0;
+}
+.settings-panel {
+  flex: 0 0 230px;
+}
+.map-panel {
+  flex: 1 1 656px;
+}
+.arrivals-panel {
+  flex: 0 0 280px;
+  position: sticky;
+  top: 20px;
 }
 h2 {
   font-size: 1.05rem;
@@ -77,12 +93,13 @@ h2 {
 }
 .settings-row {
   display: flex;
-  gap: 10px;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
   margin-bottom: 12px;
 }
 .settings-row label {
-  width: 92px;
+  width: auto;
   font-weight: 600;
   font-size: 0.9rem;
   flex-shrink: 0;
@@ -117,33 +134,29 @@ button.secondary {
   border: 1.5px solid var(--line-blue);
   color: var(--line-blue);
 }
+.settings-panel button {
+  width: 100%;
+  margin-bottom: 8px;
+}
 
-/* Felugró kártya — a jövőbeli widget stílusát előlegezi meg */
-.popup {
-  position: fixed;
-  left: 50%;
-  bottom: -320px;
-  transform: translateX(-50%);
-  width: min(92vw, 380px);
-  background: var(--ink);
-  color: #fff;
-  border-radius: 16px 16px 0 0;
-  padding: 18px 18px 22px;
-  transition: bottom 0.28s ease;
-  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.25);
-  z-index: 20;
+/* Buszérkezés-panel — korábban lecsúszó felugró kártya volt, most a térkép
+   melletti állandó oldalsávban jelenik meg, hogy sose lógjon ki a képernyőről. */
+.arrivals-panel .card {
+  position: relative;
+  min-height: 180px;
 }
-.popup.open {
-  bottom: 0;
+.arrivals-panel.open .card {
+  border: 1.5px solid var(--line-blue);
 }
-.popup .stop-title {
+.arrivals-panel .stop-title {
   font-size: 1.05rem;
   font-weight: 700;
-  margin: 0 0 2px;
+  margin: 0 22px 2px 0;
+  color: var(--ink);
 }
-.popup .stop-sub {
+.arrivals-panel .stop-sub {
   font-size: 0.8rem;
-  color: #a9bccd;
+  color: var(--muted);
   margin: 0 0 14px;
 }
 .arrival-row {
@@ -151,7 +164,7 @@ button.secondary {
   justify-content: space-between;
   align-items: center;
   padding: 9px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid #e6e2d6;
 }
 .arrival-row .line-badge {
   background: var(--stop-yellow);
@@ -167,23 +180,24 @@ button.secondary {
   flex: 1;
   margin: 0 10px;
   font-size: 0.88rem;
-  color: #e3ecf3;
+  color: var(--ink);
 }
 .arrival-row .eta {
   font-weight: 700;
   font-size: 0.92rem;
+  color: var(--line-blue);
 }
-.popup .close {
+.arrivals-panel .close {
   position: absolute;
   top: 12px;
-  right: 16px;
+  right: 12px;
   background: none;
-  color: #9fb3c4;
+  color: var(--muted);
   font-size: 1.1rem;
   padding: 2px 6px;
 }
 .empty-note {
-  color: #a9bccd;
+  color: var(--muted);
   font-size: 0.85rem;
   padding: 14px 0 2px;
 }
@@ -206,4 +220,17 @@ code {
   background: #eee;
   padding: 1px 5px;
   border-radius: 4px;
+}
+
+@media (max-width: 980px) {
+  .layout {
+    flex-direction: column;
+  }
+  .settings-panel,
+  .map-panel,
+  .arrivals-panel {
+    flex: 1 1 auto;
+    width: 100%;
+    position: static;
+  }
 }

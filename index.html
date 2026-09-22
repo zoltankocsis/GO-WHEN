@@ -15,47 +15,56 @@
 
 <main>
 
-  <div class="setup-note">
+  <!-- <div class="setup-note">
     Ehhez a demóhoz saját API-kulcsok kellenek. Lásd a <code>js/config.js</code> fájlt.
+  </div> -->
+
+  <div class="layout">
+
+    <aside class="panel settings-panel">
+      <h2>Otthon / Munkahely</h2>
+      <div class="card">
+        <div class="settings-row">
+          <label for="home-input">Otthon</label>
+          <input id="home-input" type="text" placeholder="Megálló neve vagy keresés a térképen">
+          <span class="stop-name" id="home-stop-name">nincs beállítva</span>
+        </div>
+        <div class="settings-row">
+          <label for="work-input">Munkahely</label>
+          <input id="work-input" type="text" placeholder="Megálló neve vagy keresés a térképen">
+          <span class="stop-name" id="work-stop-name">nincs beállítva</span>
+        </div>
+        <button id="save-settings">Mentés</button>
+        <button class="secondary" id="show-active">Aktív megálló mutatása most</button>
+        <p class="hint">A widget napszak szerint automatikusan az otthoni vagy munkahelyi megállót mutatja majd (pl. reggel a munkahelyi, este az otthoni).</p>
+      </div>
+    </aside>
+
+    <section class="panel map-panel">
+      <h2>Térképes demó</h2>
+      <div class="card">
+        <div id="map"></div>
+        <p class="hint">Kattints a térképen egy pontra — megkeresem a hozzá legközelebbi megállót, és megmutatom, mikor jön a következő busz.</p>
+      </div>
+    </section>
+
+    <aside class="panel arrivals-panel" id="popup">
+      <h2>Buszérkezések</h2>
+      <div class="card">
+        <button class="close" id="popup-close">✕</button>
+        <p class="stop-title" id="popup-title">Megálló</p>
+        <p class="stop-sub" id="popup-sub"></p>
+        <div id="popup-body">
+          <p class="empty-note">Kattints a térképen egy pontra a buszinformációkért.</p>
+        </div>
+      </div>
+    </aside>
+
   </div>
-
-  <section>
-    <h2>Térképes demó</h2>
-    <div class="card">
-      <div id="map"></div>
-      <p class="hint">Kattints a térképen egy pontra — megkeresem a hozzá legközelebbi megállót, és megmutatom, mikor jön a következő busz.</p>
-    </div>
-  </section>
-
-  <section>
-    <h2>Otthon és munkahely</h2>
-    <div class="card">
-      <div class="settings-row">
-        <label for="home-input">Otthon</label>
-        <input id="home-input" type="text" placeholder="Megálló neve vagy keresés a térképen">
-        <span class="stop-name" id="home-stop-name">nincs beállítva</span>
-      </div>
-      <div class="settings-row">
-        <label for="work-input">Munkahely</label>
-        <input id="work-input" type="text" placeholder="Megálló neve vagy keresés a térképen">
-        <span class="stop-name" id="work-stop-name">nincs beállítva</span>
-      </div>
-      <button id="save-settings">Mentés</button>
-      <button class="secondary" id="show-active">Aktív megálló mutatása most</button>
-      <p class="hint">A widget napszak szerint automatikusan az otthoni vagy munkahelyi megállót mutatja majd (pl. reggel a munkahelyi, este az otthoni).</p>
-    </div>
-  </section>
 
 </main>
 
 <footer>Nem hivatalos, független projekt — nem a BKK terméke.</footer>
-
-<div class="popup" id="popup">
-  <button class="close" id="popup-close">✕</button>
-  <p class="stop-title" id="popup-title">Megálló</p>
-  <p class="stop-sub" id="popup-sub"></p>
-  <div id="popup-body"></div>
-</div>
 
 <script type="module" src="js/map.js"></script>
 

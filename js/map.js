@@ -33,6 +33,11 @@ function initMap() {
     ],
   });
 
+  // Buszmegállók és tömegközlekedési vonalak megjelenítése.
+  // Egyedi megállóikonok csak közeli nagyítás (kb. 17+) mellett jelennek meg.
+  const transitLayer = new google.maps.TransitLayer();
+  transitLayer.setMap(map);
+
   map.addListener("click", (e) => {
     placeMarker(e.latLng);
     showNearestStopArrivals(e.latLng.lat(), e.latLng.lng());
@@ -53,8 +58,8 @@ async function showNearestStopArrivals(lat, lng) {
       return;
     }
     showStopHeader(stop);
-    const arrivals = await getArrivals(stop.id);
-    renderArrivals(arrivals);
+    const { stopTimes, references } = await getArrivals(stop.id);
+    renderArrivals(stopTimes, references);
   } catch (err) {
     showError(err.message);
   }

@@ -9,8 +9,7 @@
 <body>
 
 <header>
-  <h1>Busz Most</h1>
-  <p>Élő budapesti buszérkezések — egy koppintással</p>
+  <h1  class="center">Élő budapesti buszérkezések — egy koppintással</h1>
 </header>
 
 <main>
@@ -21,30 +20,37 @@
 
   <div class="layout">
 
-    <aside class="panel settings-panel">
-      <h2>Otthon / Munkahely</h2>
-      <div class="card">
-        <div class="settings-row">
-          <label for="home-input">Otthon</label>
-          <input id="home-input" type="text" placeholder="Megálló neve vagy keresés a térképen">
-          <span class="stop-name" id="home-stop-name">nincs beállítva</span>
-        </div>
-        <div class="settings-row">
-          <label for="work-input">Munkahely</label>
-          <input id="work-input" type="text" placeholder="Megálló neve vagy keresés a térképen">
-          <span class="stop-name" id="work-stop-name">nincs beállítva</span>
-        </div>
-        <button id="save-settings">Mentés</button>
-        <button class="secondary" id="show-active">Aktív megálló mutatása most</button>
-        <p class="hint">A widget napszak szerint automatikusan az otthoni vagy munkahelyi megállót mutatja majd (pl. reggel a munkahelyi, este az otthoni).</p>
+    <aside class="panel favorites-panel">
+      <h2>Állítsd be kedvenceid</h2>
+
+      <div class="card favorite-card">
+        <button class="favorite-pick-btn" id="favorite-pick-1" data-slot="1">Kedvenc 1</button>
+        <p class="favorite-stop-name" id="favorite-1-name">Nincs kiválasztva — nyomd meg a gombot, majd kattints egy megállóra a térképen.</p>
+        <div class="favorite-arrivals" id="favorite-1-arrivals"></div>
       </div>
+
+      <div class="card favorite-card">
+        <button class="favorite-pick-btn" id="favorite-pick-2" data-slot="2">Kedvenc 2</button>
+        <p class="favorite-stop-name" id="favorite-2-name">Nincs kiválasztva — nyomd meg a gombot, majd kattints egy megállóra a térképen.</p>
+        <div class="favorite-arrivals" id="favorite-2-arrivals"></div>
+      </div>
+
+      <p class="hint">A kedvenc megállók listája percenként automatikusan frissül.</p>
     </aside>
 
     <section class="panel map-panel">
-      <h2>Térképes demó</h2>
+      <h2>Kattints egy megállóra a térképen</h2>
       <div class="card">
-        <div id="map"></div>
-        <p class="hint">Kattints a térképen egy pontra — megkeresem a hozzá legközelebbi megállót, és megmutatom, mikor jön a következő busz.</p>
+        <div class="map-wrap">
+          <div id="map"></div>
+          <button id="locate-btn" class="locate-btn" title="Saját pozícióm" aria-label="Saját pozícióm">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path>
+            </svg>
+          </button>
+        </div>
+        <p class="hint">Nagyíts rá egy megállóra, és kattints az ikonjára — megmutatom, mikor jönnek a járatok.</p>
       </div>
     </section>
 

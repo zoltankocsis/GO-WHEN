@@ -58,8 +58,8 @@ main {
 .panel {
   min-width: 0;
 }
-.settings-panel {
-  flex: 0 0 230px;
+.favorites-panel {
+  flex: 0 0 260px;
 }
 .map-panel {
   flex: 1 1 656px;
@@ -69,6 +69,11 @@ main {
   position: sticky;
   top: 20px;
 }
+
+.center {
+        text-align: center;
+    }
+    
 h2 {
   font-size: 1.05rem;
   margin: 0 0 10px;
@@ -80,41 +85,74 @@ h2 {
   padding: 16px;
   box-shadow: 0 1px 3px rgba(14, 34, 51, 0.08);
 }
+.map-wrap {
+  position: relative;
+}
 #map {
   width: 100%;
   height: 340px;
   border-radius: var(--radius);
   overflow: hidden;
 }
+.locate-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: var(--muted);
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(14, 34, 51, 0.3);
+  font-weight: 400;
+}
+.locate-btn:hover {
+  color: var(--line-blue);
+  filter: none;
+}
+.locate-btn.locating {
+  color: var(--line-blue);
+}
 .hint {
   font-size: 0.85rem;
   color: var(--muted);
   margin-top: 8px;
 }
-.settings-row {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 4px;
-  margin-bottom: 12px;
+.favorite-card {
+  margin-bottom: 14px;
 }
-.settings-row label {
-  width: auto;
-  font-weight: 600;
-  font-size: 0.9rem;
-  flex-shrink: 0;
+.favorite-pick-btn {
+  width: 100%;
+  background: var(--stop-yellow);
+  color: var(--ink);
+  border: 2px solid transparent;
 }
-.settings-row input {
-  flex: 1;
-  padding: 9px 11px;
-  border-radius: 8px;
-  border: 1px solid #d7dde2;
-  font-size: 0.95rem;
+.favorite-pick-btn.picking {
+  background: #fff;
+  border-color: var(--line-blue);
+  color: var(--line-blue);
+  animation: favorite-pulse 1.1s ease-in-out infinite;
 }
-.settings-row .stop-name {
+@keyframes favorite-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+.favorite-stop-name {
   font-size: 0.85rem;
   color: var(--muted);
-  min-width: 130px;
+  margin: 10px 0 0;
+}
+.favorite-arrivals {
+  max-height: 190px;
+  overflow-y: auto;
+  margin-top: 6px;
+}
+.favorite-arrivals .arrival-row {
+  padding: 7px 0;
 }
 button {
   background: var(--stop-yellow);
@@ -129,16 +167,6 @@ button {
 button:hover {
   filter: brightness(0.96);
 }
-button.secondary {
-  background: transparent;
-  border: 1.5px solid var(--line-blue);
-  color: var(--line-blue);
-}
-.settings-panel button {
-  width: 100%;
-  margin-bottom: 8px;
-}
-
 /* Buszérkezés-panel — korábban lecsúszó felugró kártya volt, most a térkép
    melletti állandó oldalsávban jelenik meg, hogy sose lógjon ki a képernyőről. */
 .arrivals-panel .card {
@@ -158,6 +186,10 @@ button.secondary {
   font-size: 0.8rem;
   color: var(--muted);
   margin: 0 0 14px;
+}
+#popup-body {
+  max-height: 340px;
+  overflow-y: auto;
 }
 .arrival-row {
   display: flex;
@@ -226,7 +258,7 @@ code {
   .layout {
     flex-direction: column;
   }
-  .settings-panel,
+  .favorites-panel,
   .map-panel,
   .arrivals-panel {
     flex: 1 1 auto;

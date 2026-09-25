@@ -1,40 +1,22 @@
 // js/settings.js
-// Otthon/munkahely megálló mentése és lekérése. Egyszerű localStorage-alapú
+// Két kedvenc megálló mentése és lekérése. Egyszerű localStorage-alapú
 // tárolás — ugyanez a logika (más tárolóval, pl. SharedPreferences) fog
 // visszaköszönni a jövőbeli Android verzióban.
 
-import { WORK_HOURS_START, WORK_HOURS_END } from "./config.js";
+const FAVORITE_KEYS = { 1: "gowhen_favorite_1", 2: "gowhen_favorite_2" };
 
-const HOME_KEY = "gowhen_home";
-const WORK_KEY = "gowhen_work";
-
-/** @param {{id: string, name: string}} stop */
-export function saveHomeStop(stop) {
-  localStorage.setItem(HOME_KEY, JSON.stringify(stop));
-}
-
-/** @param {{id: string, name: string}} stop */
-export function saveWorkStop(stop) {
-  localStorage.setItem(WORK_KEY, JSON.stringify(stop));
-}
-
-export function getHomeStop() {
-  return JSON.parse(localStorage.getItem(HOME_KEY) || "null");
-}
-
-export function getWorkStop() {
-  return JSON.parse(localStorage.getItem(WORK_KEY) || "null");
+/**
+ * @param {1|2} slot
+ * @param {{id: string, name: string}} stop
+ */
+export function saveFavoriteStop(slot, stop) {
+  localStorage.setItem(FAVORITE_KEYS[slot], JSON.stringify(stop));
 }
 
 /**
- * Melyik megálló legyen aktív most, a napszak alapján.
- * @returns {{stop: object|null, label: string}}
+ * @param {1|2} slot
+ * @returns {{id: string, name: string} | null}
  */
-export function getActiveStop() {
-  const hour = new Date().getHours();
-  const useWork = hour >= WORK_HOURS_START && hour < WORK_HOURS_END;
-  return {
-    stop: useWork ? getWorkStop() : getHomeStop(),
-    label: useWork ? "munkahelyi megálló (nappal)" : "otthoni megálló (este/reggel)",
-  };
+export function getFavoriteStop(slot) {
+  return JSON.parse(localStorage.getItem(FAVORITE_KEYS[slot]) || "null");
 }

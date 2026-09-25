@@ -3,31 +3,44 @@
 // ez a fájl így a mobil (Capacitor) verzióban is változtatás nélkül
 // újrahasználható lesz.
 
-import { BKK_API_KEY, BKK_API_BASE, NEAREST_STOP_RADIUS_M, ARRIVALS_MINUTES_AHEAD } from "./config.js";
+import {
+  BKK_API_KEY,
+  BKK_API_BASE,
+  ARRIVALS_MINUTES_AHEAD,
+  STOP_TYPE_COLORS,
+  DEFAULT_STOP_COLOR,
+  STOP_TYPE_TEXT_COLORS,
+  DEFAULT_STOP_TEXT_COLOR,
+} from "./config.js";
 
 /**
- * Legközelebbi megálló keresése egy koordináta alapján.
+ * Adott térképnézetben (bounds) látható valódi, beszállásra használható
+ * megállók lekérése — ezekből rajzolunk ki saját, mód szerint színezett
+ * jelölőket a térképen a Google TransitLayer helyett (az nem stílusozható).
  *
- * A stops-for-location néha egy "stop-area" klasztert ad vissza legközelebbi
- * találatként (id "CS" előtaggal, locationType 1) egy nagyobb csomópontnál
- * (pl. egy metróvégállomás összes peronja). Egy ilyen klaszter routeIds-a
- * az ÖSSZES hozzá tartozó fizikai megálló járatainak uniója — ha ezt adnánk
- * vissza, a következő lépésben (getArrivals) a szomszédos peronok járatai is
- * bekeverednének a listába. Ezért csak a valódi, beszállásra használható
- * megállók közül (locationType 0) választjuk a legközelebbit.
- * @returns {Promise<{id: string, name: string} | null>}
+ * A stops-for-location "stop-area" klasztereket (id "CS" előtaggal,
+ * locationType 1) is visszaad a nagyobb csomópontoknál — ezeket kihagyjuk,
+ * mert nincs saját fizikai helyük, és a fizikai peronok (locationType 0)
+ * úgyis megjelennek külön-külön.
+ *
+ * A fizikai megálló saját "type" mezője csak EGY (nem feltétlenül a
+ * legjellemzőbb) módot ad vissza — pl. egy döntően buszos megállót is
+ * "TROLLEYBUS"-nak jelölhet, ha egyetlen trolibuszjárat is érinti. Ehelyett a
+ * "style.colors" mezőt adjuk vissza, ami az adott megállóban ténylegesen
+ * közlekedő ÖSSZES mód hivatalos színét tartalmazza — ebből választ a
+ * hívó fél (lásd map.js pickStopColor) prioritás szerint egyetlen ikonszínt.
+ * @param {{lat: number, lng: number, latSpan: number, lonSpan: number}} bounds
+ * @returns {Promise<Array<{id: string, name: string, lat: number, lon: number, colors: string[]}>>}
  */
-export async function findNearestStop(lat, lng) {
-  const url = `${BKK_API_BASE}/stops-for-location.json?key=${BKK_API_KEY}&lat=${lat}&lon=${lng}&radius=${NEAREST_STOP_RADIUS_M}`;
+export async function getStopsInBounds({ lat, lng, latSpan, lonSpan }) {
+  const url = `${BKK_API_BASE}/stops-for-location.json?key=${BKK_API_KEY}&lat=${lat}&lon=${lng}&latSpan=${latSpan}&lonSpan=${lonSpan}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`BKK API hiba: ${res.status}`);
   const data = await res.json();
   const stops = data?.data?.list || [];
-  if (!stops.length) return null;
-  // a BKK távolság szerint rendezve adja vissza, ezért az első megfelelő a legközelebbi
-  const boardable = stops.filter((s) => s.locationType === 0);
-  const s = boardable[0] || stops[0];
-  return { id: s.id, name: s.name };
+  return stops
+    .filter((s) => s.locationType === 0)
+    .map((s) => ({ id: s.id, name: s.name, lat: s.lat, lon: s.lon, colors: s.style?.colors || [] }));
 }
 
 /**
@@ -36,7 +49,7 @@ export async function findNearestStop(lat, lng) {
  * bejegyzésekben adja vissza, hanem egy külön "references" blokkban
  * (routeId / tripId alapján kikereshető) — ezért kell mindkettőt visszaadni.
  * A stopTimes bejegyzéseket a kért stopId-ra szűrjük: klaszter-azonosítóknál
- * (lásd findNearestStop) az API a csoport összes megállójának érkezését
+ * az API a csoport összes megállójának érkezését
  * visszaadja, és ilyenkor bejegyzésenként eltérő stopId mezőt ad vissza —
  * ez a szűrés a védőháló arra az esetre, ha mégis egy klaszter-id kerülne
  * ide. Egyetlen (nem klaszter) megálló lekérésekor a stopId mező nincs
@@ -61,6 +74,9 @@ export async function getArrivals(stopId) {
  * A stopTimes bejegyzésen nincs se routeId, se routeShortName közvetlenül —
  * csak tripId. A járatszámhoz ezért előbb a references.trips-ből kell
  * kikeresni a routeId-t, majd azzal a references.routes-ból a shortName-t.
+ * A route "type" mezője (BUS/TROLLEYBUS/TRAM/…) alapján adjuk meg a
+ * járatjelvény színét is, hogy egy vegyes megállóban minden sor a saját
+ * módja szerint (busz kék, trolibusz piros, stb.) jelenjen meg.
  */
 export function formatArrival(item, references = {}) {
   const eta = item.predictedArrivalTime || item.arrivalTime;
@@ -71,5 +87,7 @@ export function formatArrival(item, references = {}) {
     line: route?.shortName || "?",
     destination: item.stopHeadsign || trip?.tripHeadsign || "",
     minutesUntilArrival: Math.max(0, Math.round((eta - now) / 60)),
+    badgeColor: STOP_TYPE_COLORS[route?.type] || DEFAULT_STOP_COLOR,
+    textColor: STOP_TYPE_TEXT_COLORS[route?.type] || DEFAULT_STOP_TEXT_COLOR,
   };
 }
